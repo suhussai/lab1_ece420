@@ -1,9 +1,17 @@
-Read me for ECE420 Lab1 Script Kit
-Jan. 2016
+## Lab 1 Submission
+Syed Hussain and Anson Li
 
-=====
+#### How to run
+Input the following commands:
+
+* make all
+* ./check.sh
+* make clear
+
+#### Project Description
+
 Overview:
-    There are three groups in this kit
+There are three groups in this kit
 
 -----
     Data generating program:
@@ -20,6 +28,4 @@ Overview:
     serialtester.c   source file for the testing program, depending on the lab1_IO.c
 	check.sh	the script used for in-lab marking, should be in the same directory as the exacutables (matrixgen, serialtester and main).
 	
-=====
-Please also find the details instructions in the comments of the individual files.
 
