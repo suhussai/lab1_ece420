@@ -2,7 +2,8 @@
 # Designating default compiler and compiler values
 ###
 CC = gcc
-CFLAGS = -g -Wall -lpthread -lm
+CFLAGS = -g -Wall
+LIBS = -lpthread -lm
 
 ###
 # Setting default make
@@ -14,16 +15,16 @@ all: serialtester matrixgen main
 # Process
 ###
 main:
-	$(CC) $(CFLAGS) -o main main.c lab1_IO.c
+	$(CC) $(CFLAGS) -o main src/main.c src/lab1_IO.c $(LIBS)
 
 ###
 # Support
 ###
 serialtester: 
-	$(CC) -o serialtester serialtester.c lab1_IO.c
+	$(CC) -o serialtester src/serialtester.c src/lab1_IO.c
 
 matrixgen:
-	$(CC) -o matrixgen matrixgen.c
+	$(CC) -o matrixgen src/matrixgen.c
 
 ###
 # Clean process
