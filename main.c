@@ -2,19 +2,11 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <math.h>
-#include "time.h"
+
+#include "timer.h"
 #include "lab1_IO.h"
 
-// load the matrix
 int **A; int **B; int **C; int n; int p;
-
-#include <time.h>
-
-#define GET_TIME(now) { \
-   struct timeval t; \
-   gettimeofday(&t, NULL); \
-   now = t.tv_sec + t.tv_usec/1000000.0; \
-}
 
 void *multiply_matrix(void* rank) {
   long k = (long) rank;
@@ -32,11 +24,10 @@ void *multiply_matrix(void* rank) {
     for (my_col = j_lower_bound; my_col <= j_upper_bound; my_col++) {
       C[my_row][my_col] = 0.0;
       for (r = 0; r < n; r++){
-	C[my_row][my_col] = C[my_row][my_col] + (A[my_row][r] * B[r][my_col]);
+	      C[my_row][my_col] = C[my_row][my_col] + (A[my_row][r] * B[r][my_col]);
       }
     }
   }
-
   return NULL;
 }
 
@@ -45,7 +36,6 @@ int main(int argc, char* argv[]){
   long       thread;
   pthread_t* thread_handles;
   double start = 0.0; double end = 0.0;
-  printf("starting main\n");
 
   if (argc != 2) return 0;
   p = atoi(argv[1]);
@@ -57,29 +47,27 @@ int main(int argc, char* argv[]){
   // allocate space for matrix C, the resultant matrix
   C = malloc(n * sizeof(int*));
   int i;
-  for (i = 0; i <= n; i++)
-    {
-      (C)[i] = malloc(n * sizeof(int));
-    }
+  for (i = 0; i <= n; i++) {
+    (C)[i] = malloc(n * sizeof(int));
+  }
   GET_TIME(start);
+
   for (thread = 0; thread < p; thread++) {
-    printf("creating threads %ld\n", thread);
     pthread_create(&thread_handles[thread], NULL,
-		   multiply_matrix, (void*) thread);
+		  multiply_matrix, (void*) thread);
   }
 
   for (thread = 0; thread < p; thread++) {
     pthread_join(thread_handles[thread], NULL);
   }
+
   GET_TIME(end);
-
-  printf("saving output %f\n", end - start);
   Lab1_saveoutput(C, &n, end-start);
-
 
   free(A);
   free(B);
   free(C);
+  free(thread_handles);
   
-  return 0;
+  exit(0);
 }
